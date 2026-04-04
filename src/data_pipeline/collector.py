@@ -1,9 +1,11 @@
 import json
 import os
+import logging
 from datetime import datetime
 from src.data_pipeline.steam_api import SteamAPI
 
 OUTPUT_DIR = "data/raw"
+logger = logging.getLogger(__name__)
 
 
 class SteamDataCollector:
@@ -11,6 +13,7 @@ class SteamDataCollector:
         self.api = SteamAPI()
 
     def collect_player_data(self, steam_id):
+        """Collect summary, owned games, and recent games for a player."""
         print(f"Collecting data for {steam_id}...")
 
         summary = self.api.get_player_summary([steam_id])
@@ -32,6 +35,7 @@ class SteamDataCollector:
         return data
 
     def save_json(self, data, filename):
+        """Save data as a JSON file in the output directory."""
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         filepath = os.path.join(OUTPUT_DIR, filename)
 
@@ -39,10 +43,11 @@ class SteamDataCollector:
             json.dump(data, f, indent=2)
 
     def get_friend_ids(self, steam_id):
+        """Get list of friend Steam IDs for a given player."""
         data = self.api.get_friends(steam_id)
 
         try:
             friends = data["friendslist"]["friends"]
             return [f["steamid"] for f in friends]
-        except:
+        except (KeyError, TypeError):
             return []
