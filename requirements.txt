@@ -1,0 +1,11 @@
+pandas
+numpy
+requests
+python-dotenv
+scikit-learn
+xgboost
+fastapi
+uvicorn
+psycopg2-binary
+sqlalchemy
+shap
