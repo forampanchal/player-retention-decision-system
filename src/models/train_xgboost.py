@@ -19,7 +19,10 @@ def train_and_evaluate():
     df = df.fillna(0)
     
     # Split features and target
-    X = df.drop(columns=["churn"])
+    # CRITICAL: Drop 'recent_playtime' and 'engagement_ratio' from X.
+    # Since our mock churn label was defined using recent_playtime == 0, 
+    # keeping it here would cause data leakage (100% fake accuracy).
+    X = df.drop(columns=["churn", "recent_playtime", "engagement_ratio"])
     y = df["churn"]
     
     # Train-test split with stratify for imbalanced data
