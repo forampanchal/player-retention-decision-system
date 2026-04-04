@@ -8,4 +8,6 @@ fastapi
 uvicorn
 psycopg2-binary
 sqlalchemy
-shap
+shapmatplotlib  
+seaborn  
+jupyter 
